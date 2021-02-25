@@ -1,48 +1,19 @@
-/**
- * Created by mac on 2018/11/18.
- */
-const Square = function () {
-  // 方块数据
+let Square = function () {
+  //方块数据
   this.data = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
   ];
-  // 原点
+  //坐标
   this.origin = {
     x: 0,
     y: 0,
   };
-  // 旋转方向
+  //考虑到算法的复杂性以及旋转四种状态
+  //方向
   this.dir = 0;
-  // // 旋转数组
-  // this.rotates = [
-  //   [
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //   ],
-  //   [
-  //     [0, 0, 0, 0],
-  //     [2, 2, 2, 2],
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0],
-  //   ],
-  //   [
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //     [0, 2, 0, 0],
-  //   ],
-  //   [
-  //     [0, 0, 0, 0],
-  //     [2, 2, 2, 2],
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0],
-  //   ],
-  // ];
 };
 
 Square.prototype.canRotate = function (isValid) {
@@ -60,7 +31,6 @@ Square.prototype.canRotate = function (isValid) {
   }
   return isValid(this.origin, test);
 };
-
 Square.prototype.rotate = function (num) {
   if (!num) num = 1;
   this.dir = (this.dir + num) % 4;
@@ -77,9 +47,8 @@ Square.prototype.canDown = function (isValid) {
   test.y = this.origin.y;
   return isValid(test, this.data);
 };
-
 Square.prototype.down = function () {
-  this.origin.x = this.origin.x + 1;
+  this.origin.x += 1;
 };
 
 Square.prototype.canLeft = function (isValid) {
@@ -90,9 +59,8 @@ Square.prototype.canLeft = function (isValid) {
 };
 
 Square.prototype.left = function () {
-  this.origin.y = this.origin.y - 1;
+  this.origin.y -= 1;
 };
-
 
 Square.prototype.canRight = function (isValid) {
   let test = {};
@@ -102,5 +70,5 @@ Square.prototype.canRight = function (isValid) {
 };
 
 Square.prototype.right = function () {
-  this.origin.y = this.origin.y + 1;
+  this.origin.y += 1;
 };

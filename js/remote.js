@@ -43,8 +43,16 @@ const Remote = function (socket) {
       game.addScore(data);
     });
 
-    socket.on('rotate', function (data) {
-      game.rotate();
+    socket.on('time', function (data) {
+      game.setTime(data);
+    });
+
+    socket.on('lose', function (data) {
+      game.gameOver(false);
+    });
+
+    socket.on('addTailLines', function (data) {
+      game.addTailLines(data);
     });
   };
   // 开始

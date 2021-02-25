@@ -131,7 +131,7 @@ const Game = function () {
       return false;
     }
   };
-  // 左异
+  // 左移
   const left = function () {
     if (cur.canLeft(isValid)) {
       clearData();
@@ -149,7 +149,7 @@ const Game = function () {
       refreshDiv(gameData, gameDivs);
     }
   };
-  // 右移
+  // 旋转
   const rotate = function () {
     if (cur.canRotate(isValid)) {
       clearData();
@@ -185,6 +185,7 @@ const Game = function () {
   };
   // 消行
   const checkClear = function () {
+    let n;
     let line = 0;
     for (let i = gameData.length - 1; i >= 0; i--) {
       let clear = true;
@@ -197,17 +198,18 @@ const Game = function () {
       if (clear) {
         line += 1;
         for (let m = i; m > 0; m--) {
-          for (let n = 0; n < gameData[0].length; n++) {
+          for (n = 0; n < gameData[0].length; n++) {
             gameData[m][n] = gameData[m - 1][n];
+
           }
         }
-        for (let n = 0; n < gameData[0].length; n++) {
+        for (n = 0; n < gameData[0].length; n++) {
           gameData[0][n] = 0;
         }
         i++;
       }
-      return line;
     }
+    return line;
   };
   // 检查游戏结束
   const checkGameOver = function () {

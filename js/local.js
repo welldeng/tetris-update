@@ -5,7 +5,7 @@ const Local = function (socket) {
   // 游戏对象
   let game;
   // 时间间隔
-  let INTERVAL = 200;
+  let INTERVAL = 2000;
   // 定时器
   let timer = null;
   // 时间计数器
@@ -17,27 +17,27 @@ const Local = function (socket) {
     document.onkeydown = function (e) {
       if (e.keyCode === 38) {
         // up
-        console.log('up');
+        // console.log('up');
         game.rotate();
         socket.emit('rotate');
       } else if (e.keyCode === 39) {
         // right
-        console.log('right');
+        // console.log('right');
         game.right();
         socket.emit('right');
       } else if (e.keyCode === 40) {
         // down
-        console.log('down');
+        // console.log('down');
         game.down();
         socket.emit('down');
       } else if (e.keyCode === 37) {
         //left
-        console.log('left');
+        // console.log('left');
         game.left();
         socket.emit('left');
       } else if (e.keyCode === 32) {
         // space
-        console.log('fall');
+        // console.log('fall');
         game.fall();
         socket.emit('fall');
       }
@@ -53,10 +53,16 @@ const Local = function (socket) {
       if (line) {
         game.addScore(line);
         socket.emit('line', line);
+        if (line > 1) {
+          let bottomLines = generateBottomLine(1);
+          socket.emit('bottomLines', bottomLines);
+        }
       }
       let gameOver = game.checkGameOver();
       if (gameOver) {
-        game.gameOver();
+        game.gameOver(false);
+        document.getElementById('remote_gameover').innerHTML = '你赢了';
+        socket.emit('lose');
         stop();
       } else {
         let t = generateType();
@@ -87,9 +93,10 @@ const Local = function (socket) {
       timeCount = 0;
       time += 1;
       game.setTime(time);
-      if (time % 10 === 0) {
-        game.addTailLines(generateBottomLine(1));
-      }
+      socket.emit('time', time);
+      // if (time % 10 === 0) {
+      //   game.addTailLines(generateBottomLine(1));
+      // }
     }
   };
   // 随机生成一个方块种类
@@ -133,5 +140,21 @@ const Local = function (socket) {
   socket.on('start', function () {
     document.getElementById('waiting').innerHTML = '';
     start();
+  });
+
+  socket.on('lose', function (data) {
+    game.gameOver(true);
+    stop();
+  });
+
+  socket.on('leave', function (data) {
+    document.getElementById('local_gameover').innerHTML = '对方掉线';
+    document.getElementById('remote_gameover').innerHTML = '已掉线';
+    stop();
+  });
+
+  socket.on('bottomLines', function (data) {
+    game.addTailLines(data);
+    socket.emit('addTailLines', data);
   });
 };
