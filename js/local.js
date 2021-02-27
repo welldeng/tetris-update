@@ -5,7 +5,7 @@ const Local = function (socket) {
   // 游戏对象
   let game;
   // 时间间隔
-  let INTERVAL = 2000;
+  let INTERVAL = 300;
   // 定时器
   let timer = null;
   // 时间计数器
